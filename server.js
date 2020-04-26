@@ -74,17 +74,26 @@ function handleRequest(req, res) {
                         fs.close(fd, (err) =>{
                             if(err) {console.log(err);  return;}
                             else
-                                res.end(username + ' created successfully');
+                                res.end(username + ' updated successfully');
                         });
                     });
                     console.log(err, fd);
                 });
                 res.end('User Posted');
             }
-            res.end('PUT');
+            // res.end('PUT');
         }
         else if(req.method === 'DELETE') {
-
+            const queryObject = parsedUrl.query;
+            console.log((queryObject.username));
+            
+            let username = queryObject.username;
+            fs.unlink(usersPath + username + '.json',  (err,fd) =>{      //Open file for reading and writing. An exception occurs if the file does not exist.
+                if(err) {console.log(err.code); return;}
+                res.end(username + ' Deleted sucessfully');
+                console.log(err, fd);
+            });
+            // res.end('User Posted');
         }
         else {
             res.statusCode = 404;
